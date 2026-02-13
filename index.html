@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para ti mi amor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            background: #ffeef8;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        /* Floating hearts background */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ffb6c1;
+            opacity: 0.5;
+            animation: floatHeart 20s infinite linear;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Panel styles */
+        .panel {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Section 1 - Cats */
+        .panel-cats {
+            background: linear-gradient(180deg, #ffe4ec 0%, #ffd6e7 100%);
+        }
+
+        .cat-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .cat-left, .cat-right {
+            width: 140px;
+        }
+
+        .cat-left img, .cat-right img {
+            width: 100%;
+            filter: drop-shadow(0 10px 20px rgba(255, 105, 180, 0.3));
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 60px;
+            text-align: center;
+            color: #d4739d;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .scroll-arrow {
+            font-size: 2rem;
+            margin-top: 8px;
+            animation: bounce 1.5s infinite;
+            display: block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Section 2 - Book */
+        .panel-book {
+            background: linear-gradient(180deg, #ffd6e7 0%, #ffc8dd 100%);
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .book-wrapper {
+            perspective: 1200px;
+            width: 260px;
+            height: 340px;
+        }
+
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #ff6b9d 0%, #c44569 100%);
+            border-radius: 8px 20px 20px 8px;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            box-shadow:
+                5px 5px 30px rgba(196, 69, 105, 0.4),
+                inset -5px 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-left: 8px solid #a33a5c;
+        }
+
+        .book-cover-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .book-inside {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #fff5f8 0%, #ffe8ef 100%);
+            border-radius: 8px 20px 20px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 8px solid #ffccd5;
+            box-shadow: inset 0 0 30px rgba(255, 182, 193, 0.5);
+        }
+
+        .heart-container {
+            text-align: center;
+        }
+
+        .big-heart {
+            font-size: 120px;
+            color: #ff1493;
+            text-shadow: 0 10px 30px rgba(255, 20, 147, 0.5);
+            display: block;
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+        }
+
+        .heart-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #c71585;
+            margin-top: 15px;
+        }
+
+        /* Section 3 - Ola */
+        .panel-ola {
+            background: linear-gradient(180deg, #ffc8dd 0%, #ffafcc 100%);
+            gap: 30px;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .ola-image {
+            width: 200px;
+            filter: drop-shadow(0 15px 30px rgba(255, 105, 180, 0.4));
+        }
+
+        .ola-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #c71585;
+            text-align: center;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.9);
+        }
+
+        /* Section 4 - San Valentin */
+        .panel-valentin {
+            background: linear-gradient(180deg, #ffafcc 0%, #ffc8dd 100%);
+            gap: 25px;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .ohyeah-image {
+            width: 180px;
+            filter: drop-shadow(0 15px 30px rgba(255, 105, 180, 0.4));
+        }
+
+        .valentin-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #c71585;
+            text-align: center;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.9);
+        }
+
+        .buttons-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 260px;
+            margin-top: 15px;
+        }
+
+        .btn-yes {
+            display: block;
+            width: 100%;
+            padding: 20px 30px;
+            font-size: 1.5rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            text-align: center;
+        }
+
+        .btn-yes:active {
+            transform: scale(0.96);
+        }
+
+        .btn-yes-pink {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ee4477 100%);
+            color: white;
+        }
+
+        .btn-yes-purple {
+            background: linear-gradient(135deg, #c9a0dc 0%, #b57edc 100%);
+            color: white;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .overlay img {
+            max-width: 80vw;
+            max-height: 70vh;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 40px rgba(255, 105, 180, 0.5));
+        }
+
+        /* Section 5 - Final */
+        .panel-final {
+            background: linear-gradient(180deg, #ffc8dd 0%, #ffe4ec 100%);
+            gap: 30px;
+            display: none;
+        }
+
+        .panel-final.show {
+            display: flex;
+        }
+
+        .final-image {
+            width: 250px;
+            filter: drop-shadow(0 15px 30px rgba(255, 105, 180, 0.4));
+        }
+
+        .final-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #c71585;
+            text-align: center;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.9);
+            max-width: 300px;
+            line-height: 1.4;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <!-- Panel 1: Cats -->
+    <section class="panel panel-cats" id="panelCats">
+        <div class="cat-container">
+            <div class="cat-left">
+                <img src="nobg/catleft.png" alt="Cat" id="catLeft">
+            </div>
+            <div class="cat-right">
+                <img src="nobg/catright.png" alt="Cat" id="catRight">
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <span>Scrollea hacia abajo</span>
+            <span class="scroll-arrow">&#9829;</span>
+        </div>
+    </section>
+
+    <!-- Panel 2: Book -->
+    <section class="panel panel-book" id="panelBook">
+        <div class="book-wrapper">
+            <div class="book" id="book">
+                <div class="book-inside">
+                    <div class="heart-container">
+                        <span class="big-heart">&#10084;</span>
+                        <p class="heart-text">Para ti</p>
+                    </div>
+                </div>
+                <div class="book-cover" id="bookCover">
+                    <span class="book-cover-text">Abre tu<br>carta &#10084;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Panel 3: Ola -->
+    <section class="panel panel-ola" id="panelOla">
+        <img src="nobg/ola.png" alt="Ola" class="ola-image" id="olaImg">
+        <p class="ola-text" id="olaText">Holis, sigue scrolleando</p>
+    </section>
+
+    <!-- Panel 4: Valentin -->
+    <section class="panel panel-valentin" id="panelValentin">
+        <img src="nobg/ohyeah.png" alt="Oh Yeah" class="ohyeah-image" id="ohyeahImg">
+        <p class="valentin-text" id="valentinText">¿Serías mi San Valentín?</p>
+        <div class="buttons-box" id="buttonsBox">
+            <button type="button" class="btn-yes btn-yes-pink" id="btnPink">Sí</button>
+            <button type="button" class="btn-yes btn-yes-purple" id="btnPurple">Sí</button>
+        </div>
+    </section>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay">
+        <img id="overlayImg" src="" alt="">
+    </div>
+
+    <!-- Panel 5: Final -->
+    <section class="panel panel-final" id="panelFinal">
+        <img src="nobg/ellaviendo.png" alt="Final" class="final-image" id="finalImg">
+        <p class="final-text" id="finalText">Entonces nos vemos mañana de brunch en Macchiato</p>
+    </section>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ===== Floating Hearts =====
+        (function createHearts() {
+            const container = document.getElementById('floatingHearts');
+            const symbols = ['♥', '❤', '♡'];
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 20 + 's';
+                heart.style.fontSize = (Math.random() * 18 + 14) + 'px';
+                container.appendChild(heart);
+            }
+        })();
+
+        // ===== Initial Cat Animation =====
+        gsap.from('#catLeft', {
+            x: -120,
+            opacity: 0,
+            duration: 1,
+            ease: 'back.out(1.4)',
+            delay: 0.2
+        });
+        gsap.from('#catRight', {
+            x: 120,
+            opacity: 0,
+            duration: 1,
+            ease: 'back.out(1.4)',
+            delay: 0.2
+        });
+        gsap.from('.scroll-hint', {
+            y: 20,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.8
+        });
+
+        // ===== Pin each panel and create transitions =====
+
+        // Panel 1: Cats - Pin and fade out
+        ScrollTrigger.create({
+            trigger: '#panelCats',
+            start: 'top top',
+            end: '+=100%',
+            pin: true,
+            onLeave: () => {
+                gsap.to('#panelCats', { opacity: 0, duration: 0.3 });
+            },
+            onEnterBack: () => {
+                gsap.to('#panelCats', { opacity: 1, duration: 0.3 });
+            }
+        });
+
+        // Panel 2: Book - Pin and animate
+        ScrollTrigger.create({
+            trigger: '#panelBook',
+            start: 'top top',
+            end: '+=100%',
+            pin: true,
+            onEnter: () => {
+                gsap.to('#panelBook', { visibility: 'visible', opacity: 1, duration: 0.4 });
+                // Open book animation
+                gsap.to('#bookCover', {
+                    rotateY: -160,
+                    duration: 1.2,
+                    delay: 0.3,
+                    ease: 'power2.inOut'
+                });
+                gsap.from('.big-heart', {
+                    scale: 0,
+                    duration: 0.8,
+                    delay: 1,
+                    ease: 'back.out(1.7)'
+                });
+            },
+            onLeave: () => {
+                gsap.to('#panelBook', { opacity: 0, duration: 0.3 });
+            },
+            onEnterBack: () => {
+                gsap.to('#panelBook', { visibility: 'visible', opacity: 1, duration: 0.3 });
+                gsap.to('#bookCover', {
+                    rotateY: -160,
+                    duration: 0.5
+                });
+            },
+            onLeaveBack: () => {
+                gsap.to('#panelBook', { opacity: 0, visibility: 'hidden', duration: 0.3 });
+                gsap.to('#bookCover', {
+                    rotateY: 0,
+                    duration: 0.8,
+                    ease: 'power2.inOut'
+                });
+            }
+        });
+
+        // Panel 3: Ola - Pin and animate
+        ScrollTrigger.create({
+            trigger: '#panelOla',
+            start: 'top top',
+            end: '+=100%',
+            pin: true,
+            onEnter: () => {
+                gsap.to('#panelOla', { visibility: 'visible', opacity: 1, duration: 0.4 });
+                gsap.fromTo('#olaImg',
+                    { scale: 0, rotation: -20 },
+                    { scale: 1, rotation: 0, duration: 0.8, delay: 0.2, ease: 'back.out(1.7)' }
+                );
+                gsap.fromTo('#olaText',
+                    { y: 30, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.6, delay: 0.5 }
+                );
+            },
+            onLeave: () => {
+                gsap.to('#panelOla', { opacity: 0, duration: 0.3 });
+            },
+            onEnterBack: () => {
+                gsap.to('#panelOla', { visibility: 'visible', opacity: 1, duration: 0.3 });
+            },
+            onLeaveBack: () => {
+                gsap.to('#panelOla', { opacity: 0, visibility: 'hidden', duration: 0.3 });
+            }
+        });
+
+        // Panel 4: Valentin - Pin and animate
+        ScrollTrigger.create({
+            trigger: '#panelValentin',
+            start: 'top top',
+            end: '+=100%',
+            pin: true,
+            onEnter: () => {
+                gsap.to('#panelValentin', { visibility: 'visible', opacity: 1, duration: 0.4 });
+                gsap.fromTo('#ohyeahImg',
+                    { scale: 0 },
+                    { scale: 1, duration: 0.8, delay: 0.2, ease: 'back.out(1.7)' }
+                );
+                gsap.fromTo('#valentinText',
+                    { y: 30, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.6, delay: 0.4 }
+                );
+                gsap.fromTo('#buttonsBox',
+                    { y: 40, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.6, delay: 0.7 }
+                );
+            },
+            onEnterBack: () => {
+                gsap.to('#panelValentin', { visibility: 'visible', opacity: 1, duration: 0.3 });
+            },
+            onLeaveBack: () => {
+                gsap.to('#panelValentin', { opacity: 0, visibility: 'hidden', duration: 0.3 });
+            }
+        });
+
+        // ===== Button Handlers =====
+        document.getElementById('btnPink').addEventListener('click', handleYes);
+        document.getElementById('btnPurple').addEventListener('click', handleYes);
+
+        function handleYes() {
+            const overlay = document.getElementById('overlay');
+            const overlayImg = document.getElementById('overlayImg');
+
+            // Disable scroll
+            document.body.style.overflow = 'hidden';
+
+            // White flash
+            overlayImg.style.display = 'none';
+            overlay.classList.add('active');
+
+            createConfetti();
+
+            // Show bomb after 0.5s
+            setTimeout(() => {
+                overlayImg.src = 'nobg/bomb.png';
+                overlayImg.style.display = 'block';
+                gsap.fromTo(overlayImg,
+                    { scale: 0, rotation: 0 },
+                    { scale: 1, rotation: 360, duration: 0.6, ease: 'back.out(1.7)' }
+                );
+            }, 500);
+
+            // Show bb after 1.5s
+            setTimeout(() => {
+                overlayImg.src = 'nobg/bb.jpeg';
+                gsap.fromTo(overlayImg,
+                    { scale: 1.5, opacity: 0 },
+                    { scale: 1, opacity: 1, duration: 0.5, ease: 'power2.out' }
+                );
+            }, 1500);
+
+            // Show final after 2.5s
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                document.getElementById('panelValentin').style.display = 'none';
+                document.getElementById('panelFinal').classList.add('show');
+
+                // Re-enable limited scroll
+                document.body.style.overflow = '';
+
+                // Scroll to final
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+                // Animate final
+                gsap.from('#finalImg', {
+                    scale: 0,
+                    rotation: -15,
+                    duration: 1,
+                    ease: 'elastic.out(1, 0.6)'
+                });
+                gsap.from('#finalText', {
+                    y: 40,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: 0.4
+                });
+
+                // Keep confetti going
+                setInterval(createConfetti, 5000);
+            }, 2500);
+        }
+
+        // ===== Confetti =====
+        function createConfetti() {
+            const colors = ['#ff69b4', '#ffb6c1', '#ff1493', '#dda0dd', '#da70d6', '#ffc0cb', '#ff85a2'];
+
+            for (let i = 0; i < 50; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.top = '-20px';
+                conf.style.width = (Math.random() * 10 + 6) + 'px';
+                conf.style.height = (Math.random() * 10 + 6) + 'px';
+                conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                document.body.appendChild(conf);
+
+                gsap.to(conf, {
+                    y: window.innerHeight + 50,
+                    x: (Math.random() - 0.5) * 200,
+                    rotation: Math.random() * 720,
+                    duration: Math.random() * 2.5 + 2,
+                    ease: 'power1.out',
+                    onComplete: () => conf.remove()
+                });
+            }
+        }
+
+        // ===== Add sparkles around elements =====
+        function addSparkles(element, count) {
+            const rect = element.getBoundingClientRect();
+            for (let i = 0; i < count; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                document.body.appendChild(sparkle);
+
+                gsap.fromTo(sparkle,
+                    { scale: 0, opacity: 1 },
+                    {
+                        scale: 1.5,
+                        opacity: 0,
+                        duration: 0.8 + Math.random() * 0.5,
+                        ease: 'power1.out',
+                        onComplete: () => sparkle.remove()
+                    }
+                );
+            }
+        }
+
+        // Sparkles on heart periodically
+        setInterval(() => {
+            const heart = document.querySelector('.big-heart');
+            if (heart && heart.getBoundingClientRect().top > 0) {
+                addSparkles(heart, 5);
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
